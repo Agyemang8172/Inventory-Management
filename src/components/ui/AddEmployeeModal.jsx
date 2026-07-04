@@ -58,6 +58,7 @@ const Field = ({ label, ...inputProps }) => (
 // A labelled value with a Copy button — used on the reveal step.
 const CopyRow = ({ label, value }) => {
   const [copied, setCopied] = useState(false)
+  
 
   const copy = async () => {
     try {
@@ -88,6 +89,9 @@ const CopyRow = ({ label, value }) => {
   )
 }
 
+
+
+
 const AddEmployeeModal = ({ onClose, onCreated }) => {
   const [form, setForm] = useState({
     firstName: '',
@@ -98,6 +102,7 @@ const AddEmployeeModal = ({ onClose, onCreated }) => {
   })
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
+   const [copiedAll, setCopiedAll] = useState(false)
 
   // When set, we switch from the form to the reveal screen.
   // Shape: { name, employeeID, tempPassword }
@@ -191,17 +196,17 @@ what they log in with. They'll set their own password on first login.
             </p>
 
             <div className="space-y-4">
-  <CopyRow label="Email" value={created.email} />
-  {created.tempPassword ? (
-    <CopyRow label="Temporary Password" value={created.tempPassword} />
-  ) : (
-    <p className="text-red-400 text-xs font-sans">
-      The server didn't send a temporary password. Make sure
-      createUser returns a <span className="font-mono">tempPassword</span> field.
-    </p>
-  )}
-  <CopyRow label="Employee ID (for reference)" value={created.employeeID} />
-</div>
+                <CopyRow label="Email" value={created.email} />
+              {created.tempPassword ? (
+                <CopyRow label="Temporary Password" value={created.tempPassword} />
+              ) : (
+                <p className="text-red-400 text-xs font-sans">
+                  The server didn't send a temporary password. Make sure
+                  createUser returns a <span className="font-mono">tempPassword</span> field.
+                </p>
+              )}
+              <CopyRow label="Employee ID (for reference)" value={created.employeeID} />
+              </div>
 
             <p className="text-slate-500 text-xs font-sans mt-6">
               This is the only time the temporary password is shown — copy it now.

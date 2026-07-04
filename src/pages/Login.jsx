@@ -33,7 +33,7 @@ const Login = () => {
 
 
       const { token, user } = response.data
-      console.log('LOGIN RESPONSE USER:', user)
+    
       saveAuth(token, user)
      
 
