@@ -37,7 +37,7 @@ const Login = () => {
       saveAuth(token, user)
      
 
-// New / reset accounts must set their own password first.
+// New / reset accounts must set their own password 
 if (user.mustChangePassword) {
   navigate('/set-password')
   return
