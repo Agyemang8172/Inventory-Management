@@ -1,6 +1,11 @@
-import { useState } from 'react'
+import { useState, ReactNode } from 'react'
 import Sidebar from './Sidebar'
 import { CiMenuBurger } from 'react-icons/ci'
+
+
+interface LayoutProps{
+  children: ReactNode
+}
 
 const Layout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false)

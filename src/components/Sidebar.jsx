@@ -1,10 +1,25 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { logout, getCurrentUser } from '../utils/auth'
+import  { Roles }  from '../types'
 import { FaHome, FaUser, FaUsers } from 'react-icons/fa'
 import { SlCalender } from 'react-icons/sl'
 import { FaGear } from 'react-icons/fa6'
 import { CiLogout } from 'react-icons/ci'
 import {  FaUsersGear } from 'react-icons/fa6'
+import {ReactNode} from 'react'
+
+
+interface NavItem {
+  label:string,
+  path: String,
+  icon:ReactNode,
+  roles:Role[]
+}
+
+interface SidebarProps {
+  isOpen: boolean
+  onClose: () => void    // a function that takes no args and returns nothing
+}
 
 const allNavItems = [
   {
@@ -46,13 +61,13 @@ const allNavItems = [
   },
 ]
 
-const roleLabel = {
+const roleLabel: Record<Role, string> = {
   staff: 'Staff',
   hr: 'HR Manager',
   superadmin: 'Super Admin',
 }
 
-const Sidebar = ({ isOpen, onClose }) => {
+const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const navigate = useNavigate()
   const location = useLocation()
   const currentUser = getCurrentUser()

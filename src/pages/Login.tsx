@@ -1,19 +1,20 @@
-import React, { useState } from 'react'
+import React, { useState, FormEvent} from 'react'
 import { useNavigate } from 'react-router-dom'
 import api from '../api/axios'
 import { login as saveAuth } from '../utils/auth'
+import { LoginResponse } from '../types'
 import MeridianArt from '../assets/meridian.svg'
 
 const Login = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
-  const [showPassword, setShowPassword] = useState(false)
+  const [email, setEmail] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
+  const [loading, setLoading] = useState<boolean>(false)
+  const [error, setError] = useState<string>('')
+  const [showPassword, setShowPassword] = useState<boolean>(false)
 
   const navigate = useNavigate()
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e : FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setError('')
 
@@ -26,7 +27,7 @@ const Login = () => {
     setLoading(true)
 
     try {
-      const response = await api.post('/auth/login', {
+      const response = await api.post<LoginResponse>('/auth/login', {
         email,
         password,
       })
@@ -50,9 +51,10 @@ if (user.role === 'hr') {
 } else {
   navigate('/dashboard')
 }
-    } catch (err) {
+    } catch (err :unknown) {
       const errorMessage =
-        err.response?.data?.message || 'Login failed. Please try again.'
+        (err as { response?: { data?: { message?: string } } }).response?.data?.message ||
+        'Login failed. Please try again.'
       setError(errorMessage)
       setLoading(false)
     }
