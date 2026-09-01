@@ -2,6 +2,7 @@ import mongoose, { Schema, Document } from 'mongoose'
 import bcrypt from 'bcrypt'
 import { Role } from '../types' 
 
+  
 export interface IUser extends Document {
   employeeID: string
   firstName: string

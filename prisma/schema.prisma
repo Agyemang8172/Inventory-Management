@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+
+}
+
+enum Role {
+  ADMIN
+  MANAGER
+  STAFF
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LATE
+  HALF_DAY
+  ON_LEAVE
+}
+
+model User {
+  id              String   @id @default(uuid())
+  employeeCode    String   @unique // e.g., "EMP-001"
+  firstName       String
+  lastName        String
+  email           String   @unique
+  phoneNumber     String?
+  role            Role     @default(STAFF)
+  department      String?  // e.g., "IT", "HR", "Sales"
+  jobTitle        String?  // e.g., "Frontend Developer"
+  isActive        Boolean  @default(true)
+  profileImageUrl String?
+
+  // Relations
+  shiftId         String?
+  shift           Shift?       @relation(fields: [shiftId], references: [id])
+  attendances     Attendance[]
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Shift {
+  id        String   @id @default(uuid())
+  name      String   // e.g., "Morning Shift", "Night Shift"
+  startTime String   // e.g., "08:00"
+  endTime   String   // e.g., "17:00"
+  users     User[]
+  
+  createdAt DateTime @default(now())
+}
+
+model Attendance {
+  id             String           @id @default(uuid())
+  date           DateTime         @default(now()) // The workday date
+  checkInTime    DateTime         @default(now())
+  checkOutTime   DateTime?
+  status         AttendanceStatus @default(PRESENT)
+  
+  // Extra Tracking Data
+  checkInIp      String?          // IP address used during check-in
+  checkInLat     Float?           // Latitude for office location check
+  checkInLng     Float?           // Longitude for office location check
+  remarks        String?          // e.g., "Permission from Manager to leave early"
+
+  // Relation Foreign Key
+  userId         String
+  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+}

@@ -74,6 +74,7 @@ const EditEmployeeModal = ({ user, onClose, onUpdated }) => {
 
   const update = (key) => (e) =>
     setForm((prev) => ({ ...prev, [key]: e.target.value }))
+  
 
   // Check whether anything actually changed.
   const hasChanges = () => {
@@ -83,6 +84,8 @@ const EditEmployeeModal = ({ user, onClose, onUpdated }) => {
       form.email.trim() !== (user.email || '') ||
       form.department.trim() !== (user.department || '') ||
       form.role !== (user.role || 'staff')
+
+
     )
   }
 
